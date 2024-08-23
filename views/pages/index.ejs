@@ -1,0 +1,52 @@
+<div class="main-container">
+  <div class="info">
+    <h1>Select a package</h1>
+    <p>Click to view an interactive package of a online payments.</p>
+  </div>
+  <ul class="integration-list">
+    <% products.forEach(function(product) { %>
+    <li
+      class="integration-list-item subscription_package"
+      data-id="<%= product.identifier %>"
+      data-product_id="<%= product.stripe_product_id %>"
+      data-product_price="<%= product.stripe_product_price %>"
+    >
+      <div class="integration-list-item-link">
+        <div class="title-container">
+          <p class="integration-list-item-title"><%= product.product_name %></p>
+          <pre><b><%= product.currency %></b>&nbsp;<i><%= product.amount %></i></pre>
+          <% var metadata = JSON.parse(product.metadata); var keys =
+          Object.keys(metadata); keys.forEach(function(key) { %>
+          <pre><b><%= key %>: </b> <%= metadata[key] %></pre>
+          <% }); %>
+        </div>
+      </div>
+    </li>
+    <% }); %>
+  </ul>
+
+  <div class="order-summary">
+    <form class="order-summary-form">
+      <input
+        type="email"
+        name="email"
+        id="email"
+        class="order-summary-input-item"
+        placeholder="Your email"
+        required
+      />
+      <input
+        type="text"
+        name="customer_name"
+        id="customer_name"
+        placeholder="Your name"
+        class="order-summary-input-item"
+        required
+      />
+      <button type="button" id="checkout_btn" class="button">
+        Continue to checkout
+      </button>
+    </form>
+  </div>
+</div>
+<script src="/js/checkout.js"></script>

@@ -1,0 +1,24 @@
+<script src="./js/client.js" defer></script>
+
+<section>
+  <div class="product Box-root">
+    <div class="description Box-root">
+      <h3>Subscription to Starter plan successful!</h3>
+    </div>
+  </div>
+  <a href="<%= appUrl %>">Back to home</a>
+  <form
+    action="<%= appUrl %>create-portal-session/?session_id=<%= sessionId %>"
+    method="POST"
+  >
+    <input
+      type="hidden"
+      id="session-id"
+      name="session_id"
+      value="<%= sessionId %>"
+    />
+    <button id="checkout-and-portal-button" type="submit">
+      Manage your billing information
+    </button>
+  </form>
+</section>

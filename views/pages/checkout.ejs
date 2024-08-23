@@ -1,0 +1,81 @@
+<!-- <link rel="stylesheet" href="style.css" /> -->
+<script src="https://js.stripe.com/v3/"></script>
+<section class="subscription">
+  <form action="<%= appUrl %>create-test-subscription" method="POST">
+    <!-- Add a hidden field with the lookup_key of your Price -->
+    <input type="hidden" name="lookup_key" value="{{ PRICE_LOOKUP_KEY }}" />
+    <button id="checkout-and-portal-button" type="submit">Subscription</button>
+  </form>
+</section>
+<section class="checkout">
+  <div class="product">
+    <img
+      src="https://i.imgur.com/EHyR2nP.png"
+      alt="The cover of Stubborn Attachments"
+    />
+    <div class="description">
+      <h3>Stubborn Attachments</h3>
+      <h5>$20.00</h5>
+    </div>
+  </div>
+  <form
+    id="checkout-form"
+    action="<%= appUrl %>create-checkout-session"
+    method="POST"
+  >
+    <input
+      type="email"
+      name="email"
+      id="email"
+      placeholder="Your email"
+      required
+    />
+    <input
+      type="text"
+      name="customer_name"
+      id="customer_name"
+      placeholder="Your name"
+      required
+    />
+    <button type="submit" id="checkout-button">Checkout</button>
+  </form>
+</section>
+<script>
+  document
+    .getElementById("checkout-form")
+    .addEventListener("submit", function (event) {
+      var email = document.getElementById("email").value;
+      var customer_name = document.getElementById("customer_name").value;
+      // Attach the email value to the form data
+      var formData = new FormData();
+      formData.append("email", email);
+      formData.append("customer_name", customer_name);
+      // Append any other form data if needed
+
+      // Submit the form with updated data
+      fetch("<%= appUrl %>create-checkout-session", {
+        method: "POST",
+        body: formData,
+      })
+        .then(function (response) {
+          console.log("----session response-----:", response);
+          return response.json();
+        })
+        .then(function (session) {
+          console.log("----session-----:", session);
+          // window.location.href = session.url;
+        })
+        .then(function (result) {
+          console.log("----session error-----:", result);
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(function (error) {
+          console.log("----session catch error-----:", error);
+          console.error("Error:", error);
+        });
+
+      event.preventDefault();
+    });
+</script>
